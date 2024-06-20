@@ -1,12 +1,12 @@
+import React from "react";
 import {
-  Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
 type ExpansionPanelProps = {
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   title: string;
   numberOfRows: number;
   children: React.ReactNode;
@@ -19,20 +19,18 @@ const ExpansionPanel = ({
   children,
 }: ExpansionPanelProps) => {
   return (
-    <Accordion type="single" collapsible>
-      <AccordionItem value="item-1">
-        <AccordionTrigger>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <Icon className="size-6" />
-              <span>{title}</span>
-            </div>
-            <div>{numberOfRows}</div>
+    <AccordionItem value="item-1">
+      <AccordionTrigger>
+        <div className="flex w-full items-center justify-between px-4">
+          <div className="flex items-center space-x-2">
+            {Icon && <Icon className="size-6" />}
+            <span>{title}</span>
           </div>
-        </AccordionTrigger>
-        <AccordionContent>{children}</AccordionContent>
-      </AccordionItem>
-    </Accordion>
+          <div>{numberOfRows}</div>
+        </div>
+      </AccordionTrigger>
+      <AccordionContent>{children}</AccordionContent>
+    </AccordionItem>
   );
 };
 
