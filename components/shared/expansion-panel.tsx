@@ -21,12 +21,12 @@ const ExpansionPanel = ({
   children,
 }: ExpansionPanelProps) => {
   return (
-    <AccordionItem value={title}>
+    <AccordionItem value={title} className="mb-2 border-none">
       <AccordionTrigger
-        className="mb-2 rounded-t-2xl px-4 hover:no-underline"
+        className="rounded-t-3xl px-8 hover:no-underline"
         style={{ backgroundColor }}
       >
-        <div className="flex w-full items-center justify-between px-4">
+        <div className="flex w-full items-center justify-between">
           <div className="flex items-center space-x-2">
             {Icon && <Icon className="size-6" />}
             <span>{title}</span>
@@ -36,7 +36,9 @@ const ExpansionPanel = ({
           </div>
         </div>
       </AccordionTrigger>
-      <AccordionContent>{children}</AccordionContent>
+      <AccordionContent className="rounded-b-3xl border border-t-0 px-8 py-4 shadow-none">
+        {children}
+      </AccordionContent>
     </AccordionItem>
   );
 };
