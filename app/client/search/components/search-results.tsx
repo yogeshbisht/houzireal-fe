@@ -2,6 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import SearchInputForm from "./search-input-form";
+import { PropertySearchType } from "@/types";
 
 const searchTypeOptions = [
   { name: "sale", value: 0, text: "for sale" },
@@ -9,7 +11,9 @@ const searchTypeOptions = [
 ];
 
 const SearchResults = () => {
-  const [searchType, setSearchType] = useState(searchTypeOptions[0].name);
+  const [searchType, setSearchType] = useState<"sale" | "rent">(
+    searchTypeOptions[0].name as PropertySearchType
+  );
 
   return (
     <div className="pb-12">
@@ -24,7 +28,7 @@ const SearchResults = () => {
               }
             )}
             onClick={() => {
-              setSearchType(option.name);
+              setSearchType(option.name as PropertySearchType);
             }}
           >
             {option.text}
@@ -32,7 +36,7 @@ const SearchResults = () => {
         ))}
       </div>
       <div className="flex items-center justify-between">
-        {/* TODO: Search input form */}
+        <SearchInputForm searchType={searchType} />
       </div>
     </div>
   );
