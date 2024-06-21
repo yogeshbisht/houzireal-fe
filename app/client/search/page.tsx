@@ -1,4 +1,4 @@
-import LeftContent from "./components/left-content";
+import SearchPageContainer from "./components/search-page-container";
 
 async function getSearchResults() {
   const response = await fetch("https://jsonplaceholder.typicode.com/posts");
@@ -8,16 +8,15 @@ async function getSearchResults() {
 const ClientSearchPage = async () => {
   const data = await getSearchResults();
 
-  if (data?.length) {
+  if (!data?.length) {
     return (
-      <div className="h-20 w-full py-4">
-        <LeftContent />
+      <div className="flex h-20 w-full items-center justify-center px-12 font-medium capitalize">
+        No data matching your search criteria
       </div>
     );
   }
-  return (
-    <div className="h-20 w-full">{data?.length ? <LeftContent /> : null}</div>
-  );
+
+  return <SearchPageContainer />;
 };
 
 export default ClientSearchPage;

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import LoaderButton from "@/components/shared/loader-button";
 
-const LeftContent = () => {
+const SearchAction = () => {
   const [hideMap, setHideMap] = useState(false);
   const [hideResult, setHideResult] = useState(true);
 
@@ -47,4 +47,4 @@ const LeftContent = () => {
   );
 };
 
-export default LeftContent;
+export default SearchAction;

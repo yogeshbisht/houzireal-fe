@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { CLIENT_SIDEBAR, AGENT_SIDEBAR } from "@/constants";
+import { CLIENT_SIDEBAR, AGENT_SIDEBAR } from "@/constants/sidebar";
 
 const Sidebar = ({ type }: { type: "client" | "agent" }) => {
   const pathname = usePathname();
