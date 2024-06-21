@@ -17,7 +17,8 @@ const Sidebar = ({ type }: { type: "client" | "agent" }) => {
             className={cn(
               "flex cursor-pointer items-center justify-start px-8 py-4 transition duration-300 hover:bg-secondary",
               {
-                "bg-primary text-secondary": pathname === item.link,
+                "bg-primary text-secondary hover:bg-primary hover:text-secondary":
+                  pathname === item.link,
               }
             )}
           >
