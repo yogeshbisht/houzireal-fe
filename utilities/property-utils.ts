@@ -1,3 +1,4 @@
+import { MAX_RENT_PRICE, MAX_SALE_PRICE } from "@/constants";
 import { SelectOptionType } from "@/types";
 
 const salePrices = (): SelectOptionType[] => {
@@ -25,7 +26,7 @@ const salePrices = (): SelectOptionType[] => {
       value: value.toString(),
     });
   }
-  for (let value = 7500000; value <= 20000000; value += 2500000) {
+  for (let value = 7500000; value <= MAX_SALE_PRICE; value += 2500000) {
     priceValues.push({
       text: `$${value.toLocaleString()}`,
       value: value.toString(),
@@ -53,7 +54,7 @@ const rentPrices = (): SelectOptionType[] => {
       value: value.toString(),
     });
   }
-  for (let value = 10000; value <= 20000; value += 5000) {
+  for (let value = 10000; value <= MAX_RENT_PRICE; value += 5000) {
     priceValues.push({
       text: `$${value.toLocaleString()}`,
       value: value.toString(),

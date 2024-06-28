@@ -17,7 +17,7 @@ const SearchResults = () => {
 
   return (
     <div className="pb-12">
-      <div className="mx-2 my-4 flex grow uppercase">
+      <div className="mb-8 mt-4 flex uppercase">
         {searchTypeOptions.map((option) => (
           <div
             key={option.value}
@@ -35,9 +35,7 @@ const SearchResults = () => {
           </div>
         ))}
       </div>
-      <div className="flex items-center justify-between">
-        <SearchInputForm searchType={searchType} />
-      </div>
+      <SearchInputForm searchType={searchType} />
     </div>
   );
 };

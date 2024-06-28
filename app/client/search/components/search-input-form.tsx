@@ -4,7 +4,6 @@ import { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PropertySearchType, SelectOptionType } from "@/types";
-import { MAX_RENT_PRICE, MAX_SALE_PRICE } from "@/constants";
 import {
   SearchInputValidatorType,
   searchInputValidator,
@@ -62,7 +61,7 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
       beds: "any",
       baths: "any",
       priceMin: "any",
-      priceMax: searchType === "sale" ? MAX_SALE_PRICE : MAX_RENT_PRICE,
+      priceMax: "any",
     },
   });
 
@@ -70,16 +69,25 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
   const selectedPriceMax = form.watch("priceMax");
 
   useEffect(() => {
-    const selectedPriceMinIndex = minPriceList.findIndex(
+    let selectedPriceMinIndex = minPriceList.findIndex(
       (price) => price.value === selectedPriceMin
     );
 
+    selectedPriceMinIndex =
+      selectedPriceMinIndex < 0 ? 0 : selectedPriceMinIndex;
+
     const maxPrices = minPriceList.slice(selectedPriceMinIndex + 1);
-    maxPrices.push({ text: "Any", value: "any" });
+    if (
+      maxPrices.length > 0 &&
+      maxPrices[maxPrices.length - 1].value !== "any"
+    ) {
+      maxPrices.push({ text: "Any", value: "any" });
+    }
 
     setMaxPriceList(maxPrices);
     if (
       selectedPriceMin !== "any" &&
+      selectedPriceMax !== "any" &&
       parseInt(selectedPriceMax) <= parseInt(selectedPriceMin)
     ) {
       const nextPrice = minPriceList[selectedPriceMinIndex + 1];
@@ -87,51 +95,83 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
     }
   }, [form, selectedPriceMin, selectedPriceMax, minPriceList]);
 
+  useEffect(() => {
+    form.setValue("priceMin", "any");
+    form.setValue("priceMax", "any");
+  }, [form, searchType]);
+
   const onSubmit = (data: SearchInputValidatorType) => {
     console.log(data);
   };
 
   return (
-    <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex gap-4">
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="grid grid-cols-12 gap-4">
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem className="col-span-4">
+                <FormLabel>Address</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter address"
+                    {...field}
+                    className="text-sm"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="propertyType"
+            render={({ field }) => (
+              <FormItem className="col-span-2">
+                <FormLabel>Property Type</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
-                    <Input
-                      placeholder="Enter address"
-                      {...field}
-                      className="text-sm"
-                    />
+                    <SelectTrigger className="text-sm">
+                      <SelectValue placeholder="Select property type" />
+                    </SelectTrigger>
                   </FormControl>
-                </FormItem>
-              )}
-            />
+                  <SelectContent>
+                    {getPropertyTypeOptions(searchType).map((option) => (
+                      <SelectItem
+                        key={option.value}
+                        value={option.value}
+                        className="text-sm"
+                      >
+                        {option.text}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          />
+          <div className="col-span-2 grid grid-cols-2 gap-1">
             <FormField
               control={form.control}
-              name="propertyType"
+              name="beds"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Property Type</FormLabel>
+                  <FormLabel>Beds</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger className="text-sm">
-                        <SelectValue placeholder="Select property type" />
+                        <SelectValue placeholder="Select beds" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {getPropertyTypeOptions(searchType).map((option) => (
+                      {BED_OPTIONS.map((bed) => (
                         <SelectItem
-                          key={option.value}
-                          value={option.value}
+                          key={bed.text}
+                          value={bed.value}
                           className="text-sm"
                         >
-                          {option.text}
+                          {bed.text}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -139,122 +179,93 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
                 </FormItem>
               )}
             />
-            <div className="flex">
-              <FormField
-                control={form.control}
-                name="beds"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Beds</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="text-sm">
-                          <SelectValue placeholder="Select beds" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {BED_OPTIONS.map((bed) => (
-                          <SelectItem
-                            key={bed.text}
-                            value={bed.value}
-                            className="text-sm"
-                          >
-                            {bed.text}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="baths"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Baths</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="text-sm">
-                          <SelectValue placeholder="Select baths" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {BED_OPTIONS.map((bath) => (
-                          <SelectItem
-                            key={bath.text}
-                            value={bath.value}
-                            className="text-sm"
-                          >
-                            {bath.text}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex">
-              <FormField
-                control={form.control}
-                name="priceMin"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Price Min</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="text-sm">
-                          <SelectValue placeholder="Select price min" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {minPriceList.map((price) => (
-                          <SelectItem
-                            key={price.text}
-                            value={price.value}
-                            className="text-sm"
-                          >
-                            {price.text}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="priceMax"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Price Max</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="text-sm">
-                          <SelectValue placeholder="Select price max" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {maxPriceList.map((price) => (
-                          <SelectItem
-                            key={price.text}
-                            value={price.value}
-                            className="text-sm"
-                          >
-                            {price.text}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="baths"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Baths</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="text-sm">
+                        <SelectValue placeholder="Select baths" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {BED_OPTIONS.map((bath) => (
+                        <SelectItem
+                          key={bath.text}
+                          value={bath.value}
+                          className="text-sm"
+                        >
+                          {bath.text}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
           </div>
-        </form>
-      </Form>
-    </div>
+          <div className="col-span-3 grid grid-cols-2 gap-1">
+            <FormField
+              control={form.control}
+              name="priceMin"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price Min</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="text-sm">
+                        <SelectValue placeholder="Select price min" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {minPriceList.map((price) => (
+                        <SelectItem
+                          key={price.text}
+                          value={price.value}
+                          className="text-sm"
+                        >
+                          {price.text}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="priceMax"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price Max</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="text-sm">
+                        <SelectValue placeholder="Select price max" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {maxPriceList.map((price) => (
+                        <SelectItem
+                          key={price.text}
+                          value={price.value}
+                          className="text-sm"
+                        >
+                          {price.text}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+      </form>
+    </Form>
   );
 };
 
