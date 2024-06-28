@@ -3,10 +3,10 @@ import { z } from "zod";
 export const searchInputValidator = z.object({
   address: z.string(),
   propertyType: z.string(),
-  beds: z.number(),
-  baths: z.number(),
-  priceMin: z.number(),
-  priceMax: z.number(),
+  beds: z.string(),
+  baths: z.string(),
+  priceMin: z.string(),
+  priceMax: z.string(),
 });
 
 export type SearchInputValidatorType = z.infer<typeof searchInputValidator>;

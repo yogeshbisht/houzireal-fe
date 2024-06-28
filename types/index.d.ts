@@ -7,3 +7,8 @@ export type SidebarItemType = {
 };
 
 export type PropertySearchType = "sale" | "rent";
+
+export type SelectOptionType = {
+  text: string;
+  value: string;
+};
