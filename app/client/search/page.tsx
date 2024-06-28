@@ -1,4 +1,5 @@
-import SearchPageContainer from "./components/search-page-container";
+import SearchAction from "./components/search-action";
+import SearchResults from "./components/search-results";
 
 async function getSearchResults() {
   const response = await fetch("https://jsonplaceholder.typicode.com/posts");
@@ -16,7 +17,12 @@ const ClientSearchPage = async () => {
     );
   }
 
-  return <SearchPageContainer />;
+  return (
+    <>
+      <SearchResults />
+      <SearchAction />
+    </>
+  );
 };
 
 export default ClientSearchPage;

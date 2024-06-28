@@ -14,6 +14,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { BED_OPTIONS, STANDARD_PROPERTY_OPTIONS } from "@/constants/search";
@@ -24,7 +25,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Checkbox } from "@/components/ui/checkbox";
 import { rentPrices, salePrices } from "@/utilities/property-utils";
+import { Button } from "@/components/ui/button";
 
 type SearchInputFormProps = {
   searchType: PropertySearchType;
@@ -57,7 +65,7 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
     resolver: zodResolver(searchInputValidator),
     defaultValues: {
       address: "",
-      propertyType: "",
+      propertyType: [],
       beds: "any",
       baths: "any",
       priceMin: "any",
@@ -65,6 +73,7 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
     },
   });
 
+  const selectedPropertyType = form.watch("propertyType");
   const selectedPriceMin = form.watch("priceMin");
   const selectedPriceMax = form.watch("priceMax");
 
@@ -121,33 +130,62 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
                     className="text-sm"
                   />
                 </FormControl>
+                <FormMessage className="error-message" />
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
             name="propertyType"
-            render={({ field }) => (
+            render={() => (
               <FormItem className="col-span-2">
                 <FormLabel>Property Type</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <FormControl>
-                    <SelectTrigger className="text-sm">
-                      <SelectValue placeholder="Select property type" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="w-full" asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start text-sm"
+                    >
+                      {selectedPropertyType.length
+                        ? `${selectedPropertyType.length} type selected`
+                        : "Select property type"}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="p-4 pb-2">
                     {getPropertyTypeOptions(searchType).map((option) => (
-                      <SelectItem
+                      <FormField
                         key={option.value}
-                        value={option.value}
-                        className="text-sm"
-                      >
-                        {option.text}
-                      </SelectItem>
+                        control={form.control}
+                        name="propertyType"
+                        render={({ field }) => (
+                          <FormItem className="mb-2 flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(option.value)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([
+                                        ...field.value,
+                                        option.value,
+                                      ])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== option.value
+                                        )
+                                      );
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {option.text}
+                            </FormLabel>
+                          </FormItem>
+                        )}
+                      />
                     ))}
-                  </SelectContent>
-                </Select>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <FormMessage className="error-message" />
               </FormItem>
             )}
           />
@@ -263,6 +301,11 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
               )}
             />
           </div>
+        </div>
+        <div className="mt-8 flex items-center justify-center">
+          <Button type="submit" className="w-full max-w-80">
+            Search
+          </Button>
         </div>
       </form>
     </Form>
