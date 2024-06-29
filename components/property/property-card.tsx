@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
 import { PropertyDetails } from "@/types/property";
 
 type PropertyCardProps = {
@@ -57,13 +57,13 @@ const PropertyCard = ({
         />
       </div>
       <CardHeader>
-        <CardTitle className="text-xl">{`${propertyDetails.address}, ${propertyDetails.city} - ${propertyDetails.zip}`}</CardTitle>
+        <CardTitle className="text-base text-purple-800">{`${propertyDetails.address}, ${propertyDetails.city} - ${propertyDetails.zip}`}</CardTitle>
       </CardHeader>
       <CardContent>
         {propertyParams.map((param) => (
-          <div key={param.label} className="flex justify-between">
-            <div className="font-bold">{param.label}</div>
-            <div>{param.value}</div>
+          <div key={param.label} className="flex justify-between text-sm">
+            <div className="font-medium">{param.label}</div>
+            <div className="text-muted-foreground">{param.value}</div>
           </div>
         ))}
       </CardContent>
