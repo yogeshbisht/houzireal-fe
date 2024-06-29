@@ -5,3 +5,10 @@ export type SidebarItemType = {
   title: string;
   link: string;
 };
+
+export type PropertySearchType = "sale" | "rent";
+
+export type SelectOptionType = {
+  text: string;
+  value: string;
+};

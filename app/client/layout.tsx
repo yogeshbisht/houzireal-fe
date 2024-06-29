@@ -5,7 +5,7 @@ import SearchBar from "@/components/common/search-bar";
 const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex">
-      <div className="relative z-10 hidden h-screen w-72 shadow-lg sm:block">
+      <div className="relative z-10 hidden h-screen w-72 shadow-lg lg:block">
         <Sidebar type="client" />
       </div>
       <div className="flex-1">
