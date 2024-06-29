@@ -16,14 +16,12 @@ const PropertyCard = ({
     if (display === "favorites") {
       if (propertyDetails.autoSearch) {
         return (
-          <>
-            <div className="corner-ribbon" />
-            <div className="corner-text">
-              <span>Auto</span>
-              <br />
-              Added
+          <div className="absolute -left-1 -top-1 size-28 overflow-hidden">
+            <div className="absolute -left-10 top-4 block h-10 w-40 -rotate-45 bg-purple-800 py-1 text-center text-xs text-purple-200 shadow-md">
+              <span className="font-medium text-white">Auto</span>
+              <br /> Added
             </div>
-          </>
+          </div>
         );
       }
     }
@@ -47,7 +45,7 @@ const PropertyCard = ({
   ];
 
   return (
-    <Card>
+    <Card className="relative">
       {displayRibbon()}
       <div className="h-auto w-full cursor-pointer">
         <Image

@@ -78,11 +78,3 @@
 .error-message {
   @apply text-red-700 text-[12px];
 }
-
-.corner-ribbon {
-  @apply bg-transparent absolute z-10 before:content-none before:absolute before:top-0 before:left-0 before:border-transparent after:content-none after:absolute after:top-0 after:left-0 after:border-t-4 after:border-l-4 after:border-solid after:border-yellow-400 after:z-20;
-}
-
-.corner-text {
-  @apply absolute top-3 left-3 text-yellow-400 text-sm z-10 text-center -rotate-45;
-}
