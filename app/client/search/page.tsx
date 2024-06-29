@@ -1,5 +1,6 @@
 import SearchAction from "./components/search-action";
 import SearchResults from "./components/search-results";
+import SearchResultsList from "./components/search-results-list";
 
 async function getSearchResults() {
   const response = await fetch("https://jsonplaceholder.typicode.com/posts");
@@ -18,10 +19,11 @@ const ClientSearchPage = async () => {
   }
 
   return (
-    <>
+    <div className="space-y-8">
       <SearchResults />
       <SearchAction />
-    </>
+      <SearchResultsList />
+    </div>
   );
 };
 

@@ -11,7 +11,7 @@ const Sidebar = ({ type }: { type: "client" | "agent" }) => {
   return (
     <>
       <div className="flex h-40 items-center justify-center">brand logo</div>
-      <div className="flex flex-col ">
+      <div className="flex flex-col">
         {menuItems.map((item, index) => (
           <Link key={index} href={item.link}>
             <div

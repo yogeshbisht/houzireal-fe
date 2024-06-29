@@ -8,6 +8,8 @@ import {
   SearchInputValidatorType,
   searchInputValidator,
 } from "@/lib/validators";
+import { BED_OPTIONS, STANDARD_PROPERTY_OPTIONS } from "@/constants/search";
+import { rentPrices, salePrices } from "@/utilities/property-utils";
 import {
   Form,
   FormControl,
@@ -17,7 +19,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { BED_OPTIONS, STANDARD_PROPERTY_OPTIONS } from "@/constants/search";
 import {
   Select,
   SelectContent,
@@ -31,7 +32,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-import { rentPrices, salePrices } from "@/utilities/property-utils";
 import { Button } from "@/components/ui/button";
 
 type SearchInputFormProps = {
