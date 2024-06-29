@@ -1,9 +1,9 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useState } from "react";
-import SearchInputForm from "./search-input-form";
+import { cn } from "@/lib/utils";
 import { PropertySearchType } from "@/types";
+import SearchInputForm from "./search-input-form";
 
 const searchTypeOptions = [
   { name: "sale", value: 0, text: "for sale" },

@@ -8,6 +8,8 @@ import {
   SearchInputValidatorType,
   searchInputValidator,
 } from "@/lib/validators";
+import { BED_OPTIONS, STANDARD_PROPERTY_OPTIONS } from "@/constants/search";
+import { rentPrices, salePrices } from "@/utilities/property-utils";
 import {
   Form,
   FormControl,
@@ -17,7 +19,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { BED_OPTIONS, STANDARD_PROPERTY_OPTIONS } from "@/constants/search";
 import {
   Select,
   SelectContent,
@@ -31,7 +32,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-import { rentPrices, salePrices } from "@/utilities/property-utils";
 import { Button } from "@/components/ui/button";
 
 type SearchInputFormProps = {
@@ -121,7 +121,7 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
             control={form.control}
             name="address"
             render={({ field }) => (
-              <FormItem className="col-span-4">
+              <FormItem className="col-span-12 sm:col-span-7 md:col-span-5 xl:col-span-4">
                 <FormLabel>Address</FormLabel>
                 <FormControl>
                   <Input
@@ -138,7 +138,7 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
             control={form.control}
             name="propertyType"
             render={() => (
-              <FormItem className="col-span-2">
+              <FormItem className="col-span-7 sm:col-span-5 md:col-span-4 xl:col-span-3 3xl:col-span-2">
                 <FormLabel>Property Type</FormLabel>
                 <DropdownMenu>
                   <DropdownMenuTrigger className="w-full" asChild>
@@ -189,7 +189,7 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
               </FormItem>
             )}
           />
-          <div className="col-span-2 grid grid-cols-2 gap-1">
+          <div className="col-span-5 grid grid-cols-2 gap-1 sm:col-span-4 md:col-span-3 xl:col-span-2">
             <FormField
               control={form.control}
               name="beds"
@@ -245,7 +245,7 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
               )}
             />
           </div>
-          <div className="col-span-3 grid grid-cols-2 gap-1">
+          <div className="col-span-10 grid grid-cols-2 gap-1 sm:col-span-7 md:col-span-5 xl:col-span-3">
             <FormField
               control={form.control}
               name="priceMin"
