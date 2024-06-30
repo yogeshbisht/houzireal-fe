@@ -21,12 +21,9 @@ const SearchResults = () => {
         {searchTypeOptions.map((option) => (
           <div
             key={option.value}
-            className={cn(
-              "flex-1 cursor-pointer text-center text-sm font-medium",
-              {
-                "text-purple-800 font-bold": searchType === option.name,
-              }
-            )}
+            className={cn("flex-1 cursor-pointer text-center", {
+              "text-brand font-semibold": searchType === option.name,
+            })}
             onClick={() => {
               setSearchType(option.name as PropertySearchType);
             }}

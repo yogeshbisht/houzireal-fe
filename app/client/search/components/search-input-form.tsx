@@ -303,7 +303,7 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
           </div>
         </div>
         <div className="mt-8 flex items-center justify-center">
-          <Button type="submit" className="w-full max-w-80">
+          <Button variant="brand" type="submit" className="w-full max-w-80">
             Search
           </Button>
         </div>

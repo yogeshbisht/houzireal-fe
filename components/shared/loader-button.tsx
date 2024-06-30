@@ -11,8 +11,8 @@ type LoaderButtonProps = {
 const LoaderButton = ({ loading, btnText, onClick }: LoaderButtonProps) => {
   return (
     <Button
-      variant="outline"
-      className={cn("min-w-40", {
+      variant="brand-outline"
+      className={cn("min-w-40 text-brand", {
         "cursor-not-allowed": loading,
         "opacity-50": loading,
       })}

@@ -19,8 +19,8 @@ const FavoritesPage = () => {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-bold text-purple-800">My Favorites</h1>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4">
+      <h1 className="text-xl font-bold text-brand">My Favorites</h1>
+      <div className="property-grid">
         {userFavorites.map((property) => (
           <PropertyCard
             key={property.id}
