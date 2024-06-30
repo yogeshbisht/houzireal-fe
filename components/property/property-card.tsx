@@ -1,9 +1,13 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { PropertyInfo } from "@/types/property";
 import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
-import { PropertyDetails } from "@/types/property";
+import { propertyFullAddress } from "@/utilities/property-utils";
 
 type PropertyCardProps = {
-  propertyDetails: PropertyDetails;
+  propertyDetails: PropertyInfo;
   isTourRequested?: boolean;
   display: "search" | "favorites";
 };
@@ -47,7 +51,10 @@ const PropertyCard = ({
   return (
     <Card className="relative">
       {displayRibbon()}
-      <div className="h-auto w-full cursor-pointer">
+      <Link
+        href={`/property/${propertyDetails.id}`}
+        className="h-auto w-full cursor-pointer"
+      >
         <Image
           src={getPropertyImage()}
           alt={propertyDetails.address}
@@ -55,9 +62,11 @@ const PropertyCard = ({
           height={400}
           className="rounded-t-md"
         />
-      </div>
+      </Link>
       <CardHeader>
-        <CardTitle className="text-base text-purple-800">{`${propertyDetails.address}, ${propertyDetails.city} - ${propertyDetails.zip}`}</CardTitle>
+        <CardTitle className="text-base text-purple-800">
+          {propertyFullAddress(propertyDetails)}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         {propertyParams.map((param) => (

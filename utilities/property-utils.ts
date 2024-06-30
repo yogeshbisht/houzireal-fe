@@ -1,5 +1,6 @@
 import { MAX_RENT_PRICE, MAX_SALE_PRICE } from "@/constants";
 import { SelectOptionType } from "@/types";
+import { PropertyInfo } from "@/types/property";
 
 const salePrices = (): SelectOptionType[] => {
   const priceValues = [
@@ -63,4 +64,7 @@ const rentPrices = (): SelectOptionType[] => {
   return priceValues;
 };
 
-export { salePrices, rentPrices };
+const propertyFullAddress = (property: PropertyInfo): string => {
+  return `${property.address}, ${property.city}, ${property.zip}`;
+};
+export { salePrices, rentPrices, propertyFullAddress };

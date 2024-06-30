@@ -1,5 +1,6 @@
 import React from "react";
 import NotFound from "@/components/common/not-found";
+import PropertyDetails from "./components/property-details";
 import { getSampleProperties } from "@/dev-data/sample-properties";
 
 const PropertyDetailsPage = ({
@@ -23,11 +24,7 @@ const PropertyDetailsPage = ({
     );
   }
 
-  return (
-    <div>
-      <h1>{`Property Name for ${params.id}`}</h1>
-    </div>
-  );
+  return <PropertyDetails property={propertyDetails} />;
 };
 
 export default PropertyDetailsPage;
