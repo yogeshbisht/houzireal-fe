@@ -5,7 +5,6 @@ export interface PropertyInfo {
   zip: string;
   price: number;
   beds: number;
-  Pro;
   baths: number;
   sqft: number;
   images: string[];

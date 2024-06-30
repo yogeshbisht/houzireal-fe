@@ -67,4 +67,15 @@ const rentPrices = (): SelectOptionType[] => {
 const propertyFullAddress = (property: PropertyInfo): string => {
   return `${property.address}, ${property.city}, ${property.zip}`;
 };
-export { salePrices, rentPrices, propertyFullAddress };
+
+const getAmountWithCurrency = (
+  amount: number,
+  currency: string = "USD"
+): string => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency,
+  }).format(amount);
+};
+
+export { salePrices, rentPrices, propertyFullAddress, getAmountWithCurrency };
