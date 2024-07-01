@@ -1,8 +1,8 @@
-import { PropertyDetails } from "./property";
+import { PropertyInfo } from "./property";
 
 export interface UserProfile {
   id: number;
   name: string;
   email: string;
-  favorites: PropertyDetails[];
+  favorites: PropertyInfo[];
 }

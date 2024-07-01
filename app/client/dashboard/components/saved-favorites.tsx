@@ -1,6 +1,7 @@
 import { getUserProfile } from "@/dev-data/user-profile";
 import ExpansionPanel from "@/components/shared/expansion-panel";
 import { COLORS_ARRAY } from "@/constants/colors";
+import { propertyFullAddress } from "@/utilities/property-utils";
 
 const SavedFavorites = () => {
   const userFavorites = getUserProfile().favorites;
@@ -22,7 +23,9 @@ const SavedFavorites = () => {
           key={favorite.id}
           className="grid w-full grid-cols-4 gap-2 space-y-1"
         >
-          <span className="col-span-2 cursor-pointer">{`${favorite.address}, ${favorite.city} - ${favorite.zip}`}</span>
+          <span className="col-span-2 cursor-pointer">
+            {propertyFullAddress(favorite)}
+          </span>
           <span>{favorite.propertyType}</span>
           <span>{`${favorite.beds} beds + ${favorite.baths} baths`}</span>
         </div>

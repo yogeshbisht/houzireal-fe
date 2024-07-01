@@ -1,11 +1,11 @@
 import React from "react";
 import PropertyCard from "@/components/property/property-card";
 import { getUserProfile } from "@/dev-data/user-profile";
-import { PropertyDetails } from "@/types/property";
+import { PropertyInfo } from "@/types/property";
 import NoDataRedirect from "@/components/shared/no-data-redirect";
 
 const FavoritesPage = () => {
-  const userFavorites: PropertyDetails[] = getUserProfile().favorites;
+  const userFavorites: PropertyInfo[] = getUserProfile().favorites;
 
   if (userFavorites.length < 1) {
     return (
