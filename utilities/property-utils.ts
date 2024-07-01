@@ -78,4 +78,14 @@ const getAmountWithCurrency = (
   }).format(amount);
 };
 
-export { salePrices, rentPrices, propertyFullAddress, getAmountWithCurrency };
+const getAreaWithUnit = (area: number): string => {
+  return `${area.toLocaleString()} sqft`;
+};
+
+export {
+  salePrices,
+  rentPrices,
+  propertyFullAddress,
+  getAmountWithCurrency,
+  getAreaWithUnit,
+};

@@ -41,7 +41,7 @@ const PropertyCard = ({
 
   const propertyParams = [
     { label: "Type", value: propertyDetails.propertyType },
-    { label: "Size", value: `${propertyDetails.sqft} sqft` },
+    { label: "Size", value: `${propertyDetails.area} sqft` },
     {
       label: "Rooms",
       value: `${propertyDetails.beds} beds + ${propertyDetails.baths} baths`,

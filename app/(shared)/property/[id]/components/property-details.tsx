@@ -3,8 +3,19 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Fade from "embla-carousel-fade";
+import {
+  Banknote,
+  Bath,
+  Bed,
+  Home,
+  LandPlot,
+  MapPin,
+  ParkingCircle,
+} from "lucide-react";
+import { BiSolidCarGarage } from "react-icons/bi";
+import { MdBalcony } from "react-icons/md";
 
-import { PropertyInfo } from "@/types/property";
+import { PropertyFeature, PropertyInfo } from "@/types/property";
 import {
   getAmountWithCurrency,
   propertyFullAddress,
@@ -17,10 +28,18 @@ import {
   CarouselNext,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import PropertySection from "./property-section";
+import Link from "next/link";
 
 type PropertyDetailsProps = {
   property: PropertyInfo;
 };
+
+const BackToSearch = () => (
+  <Link href="/client/search" className="text-sm font-semibold text-brand">
+    &larr; Back to Search
+  </Link>
+);
 
 const PropertyDetails = ({ property }: PropertyDetailsProps) => {
   const [api, setApi] = useState<CarouselApi>();
@@ -40,10 +59,65 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
     });
   }, [api]);
 
+  const getPropertyFeatures = () => {
+    const propertyFeatures: PropertyFeature[] = [
+      {
+        title: "Type",
+        value: property.propertyType,
+        icon: Home,
+      },
+      {
+        title: "Bedrooms",
+        value: property.beds,
+        icon: Bed,
+      },
+      {
+        title: "Bathrooms",
+        value: property.baths,
+        icon: Bath,
+      },
+      {
+        title: "Garage Spaces",
+        value: property.garages,
+        icon: BiSolidCarGarage,
+      },
+      {
+        title: "Area",
+        value: `${property.area} sqft`,
+        icon: LandPlot,
+      },
+      {
+        title: "Secure parking",
+        icon: ParkingCircle,
+      },
+    ];
+
+    if (property.balcony) {
+      propertyFeatures.push({
+        title: "Balcony",
+        icon: MdBalcony,
+      });
+    }
+
+    return propertyFeatures;
+  };
+
   return (
     <div className="mx-auto max-w-screen-3xl p-8">
+      <div className="mb-8">
+        <BackToSearch />
+      </div>
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold">
+          {propertyFullAddress(property)}
+        </h1>
+        <p className="mt-1 flex items-center text-muted-foreground">
+          <Banknote className="mr-2 size-5" />
+          {getAmountWithCurrency(property.price)}
+        </p>
+      </div>
       <div className="grid grid-cols-12 gap-8">
-        <div className="col-span-8">
+        <div className="col-span-8 space-y-8">
           <Carousel setApi={setApi} className="w-full" plugins={[Fade()]}>
             <CarouselContent className="overflow-hidden">
               {property.images.map((image, index) => (
@@ -63,12 +137,34 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
               Image {current} of {count}
             </div>
           </Carousel>
-          <div>
-            <h1 className="text-xl font-medium text-brand">
+          <hr />
+          <PropertySection title="Description">
+            <p>{property.description}</p>
+          </PropertySection>
+          <PropertySection title="Features">
+            <div className="grid grid-cols-2 gap-4">
+              {getPropertyFeatures().map((feature, index) => (
+                <div key={`feature_${index + 1}`} className="flex items-center">
+                  <feature.icon className="mr-2 size-5 text-neutral-600" />
+                  <p className="font-medium">{feature.title}</p>
+                  {feature.value && feature.value !== 0 && (
+                    <p className="text-muted-foreground">: {feature.value}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </PropertySection>
+          <PropertySection title="Location" icon={MapPin}>
+            <p className="mt-1 text-muted-foreground">
               {propertyFullAddress(property)}
-            </h1>
-            <p className="mt-2">{getAmountWithCurrency(property.price)}</p>
-          </div>
+            </p>
+            <Image
+              src="https://picsum.photos/640/360"
+              alt="Map Location"
+              width={640}
+              height={360}
+            />
+          </PropertySection>
         </div>
         <div className="col-span-4 flex flex-col gap-4">
           <Image
@@ -84,6 +180,9 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
             height={360}
           />
         </div>
+      </div>
+      <div className="mt-8">
+        <BackToSearch />
       </div>
     </div>
   );
