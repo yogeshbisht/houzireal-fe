@@ -103,7 +103,7 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
   };
 
   return (
-    <div className="mx-auto max-w-screen-3xl p-8">
+    <div className="mx-auto min-w-[540px] max-w-screen-3xl p-8">
       <div className="mb-8">
         <BackToSearch />
       </div>
@@ -116,18 +116,20 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
           {getAmountWithCurrency(property.price)}
         </p>
       </div>
-      <div className="grid grid-cols-12 gap-8">
-        <div className="col-span-8 space-y-8">
+      <div className="grid grid-cols-12 gap-5 xl:gap-10">
+        <div className="col-span-12 space-y-8 md:col-span-8">
           <Carousel setApi={setApi} className="w-full" plugins={[Fade()]}>
             <CarouselContent className="overflow-hidden">
               {property.images.map((image, index) => (
                 <CarouselItem key={`image_${index + 1}`}>
-                  <Image
-                    src={image}
-                    alt="Property Image"
-                    width={1366}
-                    height={768}
-                  />
+                  <div className="relative h-[400px] sm:h-[480px] xl:h-[640px] 2xl:h-[720px]">
+                    <Image
+                      src={image}
+                      alt="Property Image"
+                      fill
+                      objectFit="cover"
+                    />
+                  </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -138,11 +140,30 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
             </div>
           </Carousel>
           <hr />
+        </div>
+        <div className="col-span-12 flex flex-row gap-5 md:col-span-4 md:flex-col xl:gap-10">
+          {Array.from({ length: 2 }).map((_, index) => (
+            <div
+              key={index}
+              className="relative h-40 w-1/2 sm:h-[200px] md:h-[230px] md:w-auto xl:h-[300px] 2xl:h-[340px]"
+            >
+              <Image
+                src={property.images[0]}
+                alt="Property Image"
+                fill
+                objectFit="cover"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="mt-8 grid grid-cols-12 gap-5 px-4 xl:gap-10">
+        <div className="col-span-12 space-y-8 lg:col-span-8">
           <PropertySection title="Description">
             <p>{property.description}</p>
           </PropertySection>
           <PropertySection title="Features">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {getPropertyFeatures().map((feature, index) => (
                 <div key={`feature_${index + 1}`} className="flex items-center">
                   <feature.icon className="mr-2 size-5 text-neutral-600" />
@@ -159,26 +180,12 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
               {propertyFullAddress(property)}
             </p>
             <Image
-              src="https://picsum.photos/640/360"
+              src="/images/map-marker.jpg"
               alt="Map Location"
               width={640}
               height={360}
             />
           </PropertySection>
-        </div>
-        <div className="col-span-4 flex flex-col gap-4">
-          <Image
-            src={property.images[0]}
-            alt="Property Image"
-            width={640}
-            height={360}
-          />
-          <Image
-            src={property.images[0]}
-            alt="Property Image"
-            width={640}
-            height={360}
-          />
         </div>
       </div>
       <div className="mt-8">

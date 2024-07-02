@@ -49,22 +49,21 @@ const PropertyCard = ({
   ];
 
   return (
-    <Card className="relative">
+    <Card className="min-h-[400px]">
       {displayRibbon()}
-      <Link
-        href={`/property/${propertyDetails.id}`}
-        className="h-auto w-full cursor-pointer"
-      >
-        <Image
-          src={getPropertyImage()}
-          alt={propertyDetails.address}
-          width={600}
-          height={400}
-          className="rounded-t-md"
-        />
+      <Link href={`/property/${propertyDetails.id}`} className="cursor-pointer">
+        <div className="relative h-[240px] 3xl:h-[300px]">
+          <Image
+            src={getPropertyImage()}
+            alt={propertyDetails.address}
+            objectFit="cover"
+            fill
+            className="rounded-t-md"
+          />
+        </div>
       </Link>
       <CardHeader>
-        <CardTitle className="text-base text-purple-800">
+        <CardTitle className="truncate text-base text-brand">
           {propertyFullAddress(propertyDetails)}
         </CardTitle>
       </CardHeader>

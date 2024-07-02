@@ -8,7 +8,7 @@ const SearchBar = ({ search = false }: { search?: boolean }) => {
         "min-h-60": !search,
         "min-h-[540px]": search,
       })}
-      style={{ backgroundImage: "url(https://picsum.photos/1920/540" }}
+      style={{ backgroundImage: "url('/images/header-background.jpg')" }}
     />
   );
 };
