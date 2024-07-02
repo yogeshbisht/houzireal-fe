@@ -1,15 +1,18 @@
-import SearchResults from "./components/search-results";
+import SearchInput from "./components/search-input";
 import SearchAction from "./components/search-action";
 import SearchResultsList from "./components/search-results-list";
+import SearchBar from "@/components/common/search-bar";
 
 const ClientSearchPage = () => {
   return (
-    <div className="space-y-8">
-      <SearchResults />
-      <SearchAction />
-      <SearchResultsList />
-      <SearchAction />
-    </div>
+    <>
+      <SearchBar search />
+      <div className="space-y-8 p-8">
+        <SearchInput />
+        <SearchResultsList />
+        <SearchAction />
+      </div>
+    </>
   );
 };
 

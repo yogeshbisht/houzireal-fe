@@ -10,13 +10,13 @@ const searchTypeOptions = [
   { name: "rent", value: 1, text: "for rent" },
 ];
 
-const SearchResults = () => {
+const SearchInput = () => {
   const [searchType, setSearchType] = useState<"sale" | "rent">(
     searchTypeOptions[0].name as PropertySearchType
   );
 
   return (
-    <div className="pb-12">
+    <div className="-mt-40 rounded-md bg-white p-8 pt-4 shadow-lg">
       <div className="mb-8 mt-4 flex uppercase">
         {searchTypeOptions.map((option) => (
           <div
@@ -37,4 +37,4 @@ const SearchResults = () => {
   );
 };
 
-export default SearchResults;
+export default SearchInput;

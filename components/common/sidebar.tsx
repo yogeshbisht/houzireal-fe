@@ -11,7 +11,7 @@ const Sidebar = ({ type }: { type: "client" | "agent" }) => {
   return (
     <>
       <div className="flex h-40 items-center justify-center text-center">
-        brand logo
+        HOUZIREAL
       </div>
       <div>
         {menuItems.map((item, index) => (

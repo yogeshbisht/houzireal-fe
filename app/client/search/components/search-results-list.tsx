@@ -5,7 +5,7 @@ import PropertyCard from "@/components/property/property-card";
 const SearchResultsList = () => {
   const sampleProperties = getSampleProperties();
   return (
-    <div className="property-grid">
+    <div className="property-grid pt-8">
       {sampleProperties.map((property) => (
         <PropertyCard
           key={property.id}
