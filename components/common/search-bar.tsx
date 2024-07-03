@@ -6,7 +6,7 @@ const SearchBar = ({ search = false }: { search?: boolean }) => {
     <div
       className={cn("bg-cover bg-center shadow-sm", {
         "min-h-60": !search,
-        "min-h-[540px]": search,
+        "min-h-[480px]": search,
       })}
       style={{ backgroundImage: "url('/images/header-background.jpg')" }}
     />

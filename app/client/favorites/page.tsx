@@ -19,7 +19,7 @@ const FavoritesPage = () => {
 
   return (
     <div className="space-y-4 p-8">
-      <h1 className="text-xl font-bold text-brand">My Favorites</h1>
+      <h1 className="pb-4 text-2xl font-medium text-brand">My Favorites</h1>
       <div className="property-grid">
         {userFavorites.map((property) => (
           <PropertyCard

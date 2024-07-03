@@ -127,7 +127,7 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
                       src={image}
                       alt="Property Image"
                       fill
-                      objectFit="cover"
+                      className="object-cover"
                     />
                   </div>
                 </CarouselItem>
@@ -151,7 +151,7 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
                 src={property.images[0]}
                 alt="Property Image"
                 fill
-                objectFit="cover"
+                className="object-cover"
               />
             </div>
           ))}

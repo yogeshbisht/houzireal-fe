@@ -3,8 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PropertyInfo } from "@/types/property";
-import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
-import { propertyFullAddress } from "@/utilities/property-utils";
+import {
+  Card,
+  CardContent,
+  CardTitle,
+  CardHeader,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  getAmountWithCurrency,
+  propertyFullAddress,
+} from "@/utilities/property-utils";
 
 type PropertyCardProps = {
   propertyDetails: PropertyInfo;
@@ -20,7 +29,7 @@ const PropertyCard = ({
     if (display === "favorites") {
       if (propertyDetails.autoSearch) {
         return (
-          <div className="absolute -left-1 -top-1 size-28 overflow-hidden">
+          <div className="absolute -left-1 -top-1 z-10 size-28 overflow-hidden">
             <div className="absolute -left-10 top-4 block h-10 w-40 -rotate-45 bg-purple-800 py-1 text-center text-xs text-purple-200 shadow-md">
               <span className="font-medium text-white">Auto</span>
               <br /> Added
@@ -49,16 +58,15 @@ const PropertyCard = ({
   ];
 
   return (
-    <Card className="min-h-[400px]">
+    <Card className="relative min-h-[400px]">
       {displayRibbon()}
       <Link href={`/property/${propertyDetails.id}`} className="cursor-pointer">
         <div className="relative h-[240px] 3xl:h-[300px]">
           <Image
             src={getPropertyImage()}
             alt={propertyDetails.address}
-            objectFit="cover"
             fill
-            className="rounded-t-md"
+            className="rounded-t-md object-cover"
           />
         </div>
       </Link>
@@ -66,6 +74,9 @@ const PropertyCard = ({
         <CardTitle className="truncate text-base text-brand">
           {propertyFullAddress(propertyDetails)}
         </CardTitle>
+        <CardDescription className="font-semibold">
+          {getAmountWithCurrency(propertyDetails.price)}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         {propertyParams.map((param) => (
