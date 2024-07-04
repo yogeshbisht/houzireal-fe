@@ -15,7 +15,7 @@ import {
 import { BiSolidCarGarage } from "react-icons/bi";
 import { MdBalcony } from "react-icons/md";
 
-import { PropertyFeature, PropertyInfo } from "@/types/property";
+import { PropertyFeature } from "@/types/property";
 import {
   getAmountWithCurrency,
   propertyFullAddress,
@@ -30,9 +30,11 @@ import {
 } from "@/components/ui/carousel";
 import PropertySection from "./property-section";
 import Link from "next/link";
+import { useGetPropertyByIdQuery } from "@/app/services/property.service";
+import NotFound from "@/components/common/not-found";
 
 type PropertyDetailsProps = {
-  property: PropertyInfo;
+  propertyId: string;
 };
 
 const BackToSearch = () => (
@@ -41,7 +43,13 @@ const BackToSearch = () => (
   </Link>
 );
 
-const PropertyDetails = ({ property }: PropertyDetailsProps) => {
+const PropertyDetails = ({ propertyId }: PropertyDetailsProps) => {
+  const {
+    data: property,
+    isLoading,
+    isError,
+  } = useGetPropertyByIdQuery(propertyId);
+
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -58,6 +66,23 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
       setCurrent(api.selectedScrollSnap() + 1);
     });
   }, [api]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading property details</div>;
+  }
+
+  if (!property) {
+    return (
+      <NotFound
+        message="We are not able to find the property you're looking for."
+        linkText="Go to Properties Search page"
+      />
+    );
+  }
 
   const getPropertyFeatures = () => {
     const propertyFeatures: PropertyFeature[] = [
