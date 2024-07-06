@@ -1,10 +1,21 @@
 import { api } from "./api.service";
-import { PropertyInfo } from "@/types/property";
+import {
+  GetPropertyParams,
+  PropertyInfo,
+  PropertyQueryParams,
+} from "@/types/property";
 
 export const propertyApi = api.injectEndpoints({
   endpoints: (build) => ({
-    getProperties: build.query<PropertyInfo[], void>({
-      query: () => "/property",
+    getProperties: build.query<
+      GetPropertyParams,
+      PropertyQueryParams | undefined
+    >({
+      query: (queryParams) => ({
+        url: "/property",
+        params: queryParams,
+      }),
+      providesTags: ["Properties"],
     }),
 
     getPropertyById: build.query<PropertyInfo, string>({

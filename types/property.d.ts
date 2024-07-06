@@ -15,10 +15,28 @@ export interface PropertyInfo {
   images: string[];
   propertyType: string;
   autoSearch: boolean;
+  addedOn: Date;
 }
 
 export interface PropertyFeature {
   title: string;
   value?: any;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+}
+
+export interface GetPropertyParams {
+  count: number;
+  properties: PropertyInfo[];
+}
+
+export interface PropertyQueryParams {
+  page?: number;
+  limit?: number;
+  address?: string;
+  sort?: string;
+  type?: string;
+  beds?: number;
+  baths?: number;
+  priceMin?: number;
+  priceMax?: number;
 }
