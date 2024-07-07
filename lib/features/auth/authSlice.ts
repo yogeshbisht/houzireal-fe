@@ -15,7 +15,7 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setProfile: (state, action: PayloadAction<UserProfile>) => {
+    setProfile: (state, action: PayloadAction<UserProfile | null>) => {
       state.profile = action.payload;
     },
     setAuth: (state, action: PayloadAction<boolean>) => {
