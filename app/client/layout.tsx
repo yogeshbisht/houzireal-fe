@@ -1,10 +1,10 @@
 import React from "react";
-import Sidebar from "@/components/common/sidebar";
-import { API_URL } from "../services/api.service";
 import { redirect } from "next/navigation";
+import { GetRequest } from "@/lib/API";
+import Sidebar from "@/components/common/sidebar";
 
 async function checkUserSession() {
-  const response = await fetch(`${API_URL}/user/session`);
+  const response = await GetRequest("/user/session");
   const result = await response.json();
   return result.isAuthenticated;
 }
@@ -13,7 +13,7 @@ const ClientLayout = async ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = await checkUserSession();
 
   if (!isAuthenticated) {
-    redirect("/account/login");
+    redirect("/account/signin");
   }
 
   return (

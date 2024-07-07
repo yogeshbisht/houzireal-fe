@@ -4,6 +4,7 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import StoreProvider from "@/provider/StoreProvider";
+import { Toaster } from "sonner";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -26,7 +27,8 @@ export default function RootLayout({
             fontSans.variable
           )}
         >
-          {children}
+          <div className="min-w-[480px] overflow-auto">{children}</div>
+          <Toaster richColors />
         </body>
       </html>
     </StoreProvider>

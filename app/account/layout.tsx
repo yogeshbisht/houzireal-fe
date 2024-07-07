@@ -22,7 +22,7 @@ const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
         <div className="absolute size-full bg-black opacity-50" />
       </div>
       <div className="flex flex-1 items-center justify-center">
-        <Card className="m-8 w-full">{children}</Card>
+        <Card className="m-8 w-full max-w-md">{children}</Card>
       </div>
     </div>
   );

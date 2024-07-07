@@ -27,8 +27,9 @@ import {
 import { setProfile } from "@/lib/features/auth/authSlice";
 import { toast } from "sonner";
 import { signInUserAction } from "@/lib/actions/auth.action";
+import AuthFooter from "../components/auth-footer";
 
-const AccountLoginPage = () => {
+const AccountSignInPage = () => {
   const dispatch = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
@@ -43,12 +44,13 @@ const AccountLoginPage = () => {
 
   const onSubmit = async (data: SignInValidatorType) => {
     setIsSubmitting(true);
-    console.log(data);
 
     const response = await signInUserAction(data);
 
-    if (response.user) {
-      dispatch(setProfile(response.user));
+    console.log(response);
+
+    if (response.data) {
+      dispatch(setProfile(response.data));
       setIsSubmitting(false);
       return router.push("/client/dashboard");
     }
@@ -70,23 +72,24 @@ const AccountLoginPage = () => {
           Enter your credentials to access your account.
         </CardDescription>
       </CardHeader>
-      <CardContent className="my-4">
+      <hr className="mb-6" />
+      <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="space-y-2">
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your Email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="mt-4">
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your Email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="password"
@@ -104,22 +107,28 @@ const AccountLoginPage = () => {
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="mt-8">
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-brand"
-              >
-                {isSubmitting && <Loader2 className="mr-2" size={16} />}
-                {isSubmitting ? "Signing in..." : "Sign In"}
-              </Button>
+              <div className="flex justify-center pt-4">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-brand"
+                >
+                  {isSubmitting && <Loader2 className="mr-2" size={16} />}
+                  {isSubmitting ? "Signing in..." : "Sign In"}
+                </Button>
+              </div>
             </div>
           </form>
         </Form>
       </CardContent>
+      <hr className="mb-6" />
+      <AuthFooter
+        footerText="Don't have an account?"
+        redirectLink="/account/signup"
+        authText="Sign Up"
+      />
     </>
   );
 };
 
-export default AccountLoginPage;
+export default AccountSignInPage;
