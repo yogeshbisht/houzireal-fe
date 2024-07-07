@@ -1,35 +1,60 @@
-import { getUserProfile } from "@/dev-data/user-profile";
-import ExpansionPanel from "@/components/shared/expansion-panel";
+"use client";
+
 import { COLORS_ARRAY } from "@/constants/colors";
+import { useGetUserProfileQuery } from "@/app/services/user.service";
 import { propertyFullAddress } from "@/utilities/property-utils";
+import ExpansionPanel from "@/components/shared/expansion-panel";
 
 const SavedFavorites = () => {
-  const userFavorites = getUserProfile().favorites;
+  const { data: user, isLoading, isError } = useGetUserProfileQuery();
 
-  // TODO: replace grid with table when real data is available
+  const displayFavoriteProperties = () => {
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
+
+    if (isError) {
+      return <div>Error loading favorites</div>;
+    }
+
+    if (!user?.favorites?.length) {
+      return (
+        <div className="flex items-center justify-center">
+          There are no saved favorites.
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <div className="mb-2 grid w-full grid-cols-4 text-sm font-bold">
+          <span className="col-span-2">Address</span>
+          <span>Property Type</span>
+          <span>Beds/Baths</span>
+        </div>
+        {user.favorites.map((favorite) => (
+          <div
+            key={favorite.id}
+            className="grid w-full grid-cols-4 gap-2 space-y-1"
+          >
+            <span className="col-span-2 cursor-pointer">
+              {propertyFullAddress(favorite)}
+            </span>
+            <span>{favorite.propertyType}</span>
+            <span>{`${favorite.beds} beds + ${favorite.baths} baths`}</span>
+          </div>
+        ))}
+      </>
+    );
+  };
+
   return (
     <ExpansionPanel
       title="Saved Favorites"
-      numberOfRows={userFavorites.length}
+      numberOfRows={user?.favorites?.length || 0}
       backgroundColor={COLORS_ARRAY[5]}
     >
-      <div className="mb-2 grid w-full grid-cols-4 text-sm font-bold">
-        <span className="col-span-2">Address</span>
-        <span>Property Type</span>
-        <span>Beds/Baths</span>
-      </div>
-      {userFavorites.map((favorite) => (
-        <div
-          key={favorite.id}
-          className="grid w-full grid-cols-4 gap-2 space-y-1"
-        >
-          <span className="col-span-2 cursor-pointer">
-            {propertyFullAddress(favorite)}
-          </span>
-          <span>{favorite.propertyType}</span>
-          <span>{`${favorite.beds} beds + ${favorite.baths} baths`}</span>
-        </div>
-      ))}
+      {displayFavoriteProperties()}
     </ExpansionPanel>
   );
 };

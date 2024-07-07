@@ -12,3 +12,8 @@ export type SelectOptionType = {
   text: string;
   value: string;
 };
+
+export interface ResponseErrorParams {
+  statusCode: number;
+  message: string;
+}

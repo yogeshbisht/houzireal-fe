@@ -110,7 +110,17 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
   }, [form, searchType]);
 
   const onSubmit = (data: SearchInputValidatorType) => {
-    console.log(data);
+    const { address, propertyType, beds, baths, priceMin, priceMax } = data;
+    const searchParams = {
+      address,
+      type: propertyType.join(","),
+      beds: beds === "any" ? "" : beds,
+      baths: baths === "any" ? "" : baths,
+      priceMin: priceMin === "any" ? "" : priceMin,
+      priceMax: priceMax === "any" ? "" : priceMax,
+    };
+
+    console.log(searchParams);
   };
 
   return (

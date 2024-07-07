@@ -1,12 +1,27 @@
+"use client";
+
 import React from "react";
-import { getSampleProperties } from "@/dev-data/sample-properties";
 import PropertyCard from "@/components/property/property-card";
+import { useGetPropertiesQuery } from "@/app/services/property.service";
 
 const SearchResultsList = () => {
-  const sampleProperties = getSampleProperties();
+  const { data, isLoading, isError } = useGetPropertiesQuery({});
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading properties</div>;
+  }
+
+  if (!data || !data.properties) {
+    return <div>No properties found</div>;
+  }
+
   return (
     <div className="property-grid pt-8">
-      {sampleProperties.map((property) => (
+      {data.properties.map((property) => (
         <PropertyCard
           key={property.id}
           display="search"
