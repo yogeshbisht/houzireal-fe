@@ -6,10 +6,8 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-import { useAppDispatch } from "@/hooks/use-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpValidator, SignUpValidatorType } from "@/lib/validators";
-import { setProfile } from "@/lib/features/auth/authSlice";
 import { signUpUserAction } from "@/lib/actions/auth.action";
 import {
   Form,
@@ -30,7 +28,6 @@ import {
 import AuthFooter from "../components/auth-footer";
 
 const AccountSignUpPage = () => {
-  const dispatch = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -45,22 +42,17 @@ const AccountSignUpPage = () => {
 
   const onSubmit = async (data: SignUpValidatorType) => {
     setIsSubmitting(true);
-    console.log(data);
-
     const response = await signUpUserAction(data);
+    setIsSubmitting(false);
 
     if (response.data) {
-      dispatch(setProfile(response.data));
-      setIsSubmitting(false);
       return router.push("/client/dashboard");
     }
 
-    dispatch(setProfile(null));
     const errMessage =
       response.statusCode === 500
         ? "An error occurred, please try again later."
         : response.message;
-    setIsSubmitting(false);
     toast.error(errMessage);
   };
 

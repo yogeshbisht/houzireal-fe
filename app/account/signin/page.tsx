@@ -4,10 +4,11 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
-import { useAppDispatch } from "@/hooks/use-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInValidator, SignInValidatorType } from "@/lib/validators";
+import { signInUserAction } from "@/lib/actions/auth.action";
 import {
   Form,
   FormControl,
@@ -24,13 +25,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { setProfile } from "@/lib/features/auth/authSlice";
-import { toast } from "sonner";
-import { signInUserAction } from "@/lib/actions/auth.action";
 import AuthFooter from "../components/auth-footer";
 
 const AccountSignInPage = () => {
-  const dispatch = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -44,23 +41,17 @@ const AccountSignInPage = () => {
 
   const onSubmit = async (data: SignInValidatorType) => {
     setIsSubmitting(true);
-
     const response = await signInUserAction(data);
-
-    console.log(response);
+    setIsSubmitting(false);
 
     if (response.data) {
-      dispatch(setProfile(response.data));
-      setIsSubmitting(false);
       return router.push("/client/dashboard");
     }
 
-    dispatch(setProfile(null));
     const errMessage =
       response.statusCode === 500
         ? "An error occurred, please try again later."
         : response.message;
-    setIsSubmitting(false);
     toast.error(errMessage);
   };
 
