@@ -4,12 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 import { PropertyInfo } from "@/types/property";
+import { cn } from "@/lib/utils";
 import {
   getAmountWithCurrency,
   propertyFullAddress,
 } from "@/utilities/property-utils";
+import { apiErrorMessage } from "@/utilities/text-utils";
 import { useGetUserProfileQuery } from "@/app/services/user.service";
 import { useAddPropertyToFavoritesMutation } from "@/app/services/property.service";
 import {
@@ -20,9 +23,6 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
-import { toast } from "sonner";
-import { apiErrorMessage } from "@/utilities/text-utils";
-import { cn } from "@/lib/utils";
 
 type PropertyCardProps = {
   propertyDetails: PropertyInfo;
@@ -73,6 +73,14 @@ const PropertyCard = ({
       }
     }
     return null;
+  };
+
+  const displayFavorite = () => {
+    if (!user || !user.id) {
+      return false;
+    }
+
+    return propertyDetails.addedBy !== user.id;
   };
 
   const getPropertyImage = () => {
@@ -129,7 +137,7 @@ const PropertyCard = ({
           </div>
         ))}
       </CardContent>
-      {user && user.id && (
+      {displayFavorite() && (
         <>
           <hr className="w-full" />
           <CardFooter>
@@ -138,7 +146,7 @@ const PropertyCard = ({
                 "disable-element": isAdding,
               })}
             >
-              {isUserFavorite(user.favorites) ? (
+              {isUserFavorite(user?.favorites) ? (
                 <IoMdHeart
                   className="size-5 cursor-pointer text-red-400"
                   onClick={() => onFavClick(true)}
