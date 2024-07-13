@@ -27,6 +27,7 @@ export interface PropertyFeature {
 
 export interface GetPropertyParams {
   count: number;
+  hasMore: boolean;
   properties: PropertyInfo[];
 }
 
