@@ -12,8 +12,8 @@ export interface SignUpUserParams {
 }
 
 export interface UserProfile {
-  id: string;
+  id: number;
   name: string;
   email: string;
-  favorites?: PropertyInfo[];
+  favorites: PropertyInfo[];
 }

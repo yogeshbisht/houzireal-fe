@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import SearchAction from "./search-action";
 import PropertyCard from "@/components/property/property-card";
 import { useGetPropertiesQuery } from "@/app/services/property.service";
 
@@ -21,18 +20,15 @@ const SearchResultsList = () => {
   }
 
   return (
-    <>
-      <div className="property-grid pt-8">
-        {data.properties.map((property) => (
-          <PropertyCard
-            key={property.id}
-            display="search"
-            propertyDetails={property}
-          />
-        ))}
-      </div>
-      {data.hasMore && <SearchAction />}
-    </>
+    <div className="property-grid pt-8">
+      {data.properties.map((property) => (
+        <PropertyCard
+          key={property.id}
+          display="search"
+          propertyDetails={property}
+        />
+      ))}
+    </div>
   );
 };
 

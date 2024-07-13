@@ -3,17 +3,14 @@
 import { useState } from "react";
 import LoaderButton from "@/components/shared/loader-button";
 
-interface SearchActionProps {
-  onClick: () => void;
-}
-
-const SearchAction = ({ onClick }: SearchActionProps) => {
+const SearchAction = () => {
   const [loading, setLoading] = useState(false);
 
   const onLoadMore = () => {
     setLoading(true);
-    onClick();
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
   };
 
   return (

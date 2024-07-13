@@ -2,27 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
-import { useEffect } from "react";
-import { toast } from "sonner";
-
 import { PropertyInfo } from "@/types/property";
-import { cn } from "@/lib/utils";
-import {
-  getAmountWithCurrency,
-  propertyFullAddress,
-} from "@/utilities/property-utils";
-import { apiErrorMessage } from "@/utilities/text-utils";
-import { useGetUserProfileQuery } from "@/app/services/user.service";
-import { useAddPropertyToFavoritesMutation } from "@/app/services/property.service";
 import {
   Card,
   CardContent,
   CardTitle,
   CardHeader,
   CardDescription,
-  CardFooter,
 } from "@/components/ui/card";
+import {
+  getAmountWithCurrency,
+  propertyFullAddress,
+} from "@/utilities/property-utils";
 
 type PropertyCardProps = {
   propertyDetails: PropertyInfo;
@@ -34,31 +25,6 @@ const PropertyCard = ({
   propertyDetails,
   display = "search",
 }: PropertyCardProps) => {
-  const { data: user } = useGetUserProfileQuery();
-  const [setFavorite, { data, isLoading: isAdding, isError, error }] =
-    useAddPropertyToFavoritesMutation();
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(
-        "Add To Favorites Failed",
-        apiErrorMessage(error, "Error adding property to favorites")
-      );
-    }
-    if (data && data === "success") {
-      toast.success("Property added to favorites");
-    }
-  }, [data, isError, error]);
-
-  const propertyParams = () => [
-    { label: "Type", value: propertyDetails.propertyType },
-    { label: "Size", value: `${propertyDetails.area} sqft` },
-    {
-      label: "Rooms",
-      value: `${propertyDetails.beds} beds + ${propertyDetails.baths} baths`,
-    },
-  ];
-
   const displayRibbon = () => {
     if (display === "favorites") {
       if (propertyDetails.autoSearch) {
@@ -75,14 +41,6 @@ const PropertyCard = ({
     return null;
   };
 
-  const displayFavorite = () => {
-    if (!user || !user.id) {
-      return false;
-    }
-
-    return propertyDetails.addedBy !== user.id;
-  };
-
   const getPropertyImage = () => {
     if (propertyDetails.images.length > 0) {
       return propertyDetails.images[0];
@@ -90,23 +48,14 @@ const PropertyCard = ({
     return "https://picsum.photos/600/400";
   };
 
-  const isUserFavorite = (favorites: PropertyInfo[] | undefined) => {
-    if (!favorites?.length) {
-      return false;
-    }
-
-    return favorites.some((favorite) => favorite.id === propertyDetails.id);
-  };
-
-  const onFavClick = (fav: boolean) => {
-    if (fav) {
-      // Remove from favorites
-      // eslint-disable-next-line no-alert
-      alert("Remove from favorites");
-    } else {
-      setFavorite(propertyDetails.id);
-    }
-  };
+  const propertyParams = [
+    { label: "Type", value: propertyDetails.propertyType },
+    { label: "Size", value: `${propertyDetails.area} sqft` },
+    {
+      label: "Rooms",
+      value: `${propertyDetails.beds} beds + ${propertyDetails.baths} baths`,
+    },
+  ];
 
   return (
     <Card className="relative min-h-[400px]">
@@ -130,37 +79,13 @@ const PropertyCard = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {propertyParams().map((param) => (
+        {propertyParams.map((param) => (
           <div key={param.label} className="flex justify-between text-sm">
             <div className="font-medium">{param.label}</div>
             <div className="text-muted-foreground">{param.value}</div>
           </div>
         ))}
       </CardContent>
-      {displayFavorite() && (
-        <>
-          <hr className="w-full" />
-          <CardFooter>
-            <div
-              className={cn("flex w-full items-center justify-end pt-2", {
-                "disable-element": isAdding,
-              })}
-            >
-              {isUserFavorite(user?.favorites) ? (
-                <IoMdHeart
-                  className="size-5 cursor-pointer text-red-400"
-                  onClick={() => onFavClick(true)}
-                />
-              ) : (
-                <IoMdHeartEmpty
-                  className="size-5 cursor-pointer text-red-400"
-                  onClick={() => onFavClick(false)}
-                />
-              )}
-            </div>
-          </CardFooter>
-        </>
-      )}
     </Card>
   );
 };
