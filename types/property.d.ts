@@ -16,6 +16,7 @@ export interface PropertyInfo {
   propertyType: string;
   autoSearch: boolean;
   addedOn: Date;
+  addedBy: string;
 }
 
 export interface PropertyFeature {

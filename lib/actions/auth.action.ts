@@ -13,7 +13,6 @@ export const signInUserAction = async (params: SignInUserParams) => {
   try {
     const response = await PostRequest("/auth/signin", params, true);
     const result = await response.json();
-    console.log(result);
 
     if (result.token) {
       cookies().set("token", result.token, {
