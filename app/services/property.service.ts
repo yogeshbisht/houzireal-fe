@@ -16,10 +16,13 @@ export const propertyApi = api.injectEndpoints({
         params: queryParams,
       }),
       providesTags: ["Properties"],
+      transformResponse: (response: { data: GetPropertyParams }) =>
+        response.data,
     }),
 
     getPropertyById: build.query<PropertyInfo, string>({
       query: (id) => `/property/${id}`,
+      transformResponse: (response: { data: PropertyInfo }) => response.data,
     }),
 
     addPropertyToFavorites: build.mutation<string, string>({
@@ -27,7 +30,7 @@ export const propertyApi = api.injectEndpoints({
         url: `/property/${propertyId}/favorite`,
         method: "POST",
       }),
-      invalidatesTags: ["Properties"],
+      invalidatesTags: ["UserProfile"],
       transformResponse: (response: { data: string }) => response.data,
     }),
   }),
