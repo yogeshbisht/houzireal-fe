@@ -36,9 +36,13 @@ import { Button } from "@/components/ui/button";
 
 type SearchInputFormProps = {
   searchType: PropertySearchType;
+  onSearchInput: (searchParams: Record<string, string>) => void;
 };
 
-const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
+const SearchInputForm = ({
+  searchType,
+  onSearchInput,
+}: SearchInputFormProps) => {
   const memoizedSalePrices = useMemo(() => salePrices(), []);
   const memoizedRentPrices = useMemo(() => rentPrices(), []);
 
@@ -120,7 +124,7 @@ const SearchInputForm = ({ searchType }: SearchInputFormProps) => {
       priceMax: priceMax === "any" ? "" : priceMax,
     };
 
-    console.log(searchParams);
+    onSearchInput(searchParams);
   };
 
   return (
