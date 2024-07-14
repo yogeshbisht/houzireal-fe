@@ -90,12 +90,12 @@ const PropertyCard = ({
     return "https://picsum.photos/600/400";
   };
 
-  const isUserFavorite = (favorites: PropertyInfo[] | undefined) => {
+  const isUserFavorite = (favorites: string[] | undefined) => {
     if (!favorites?.length) {
       return false;
     }
 
-    return favorites.some((favorite) => favorite.id === propertyDetails.id);
+    return favorites.includes(propertyDetails.id);
   };
 
   const onFavClick = (fav: boolean) => {
