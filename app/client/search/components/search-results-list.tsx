@@ -38,18 +38,6 @@ const SearchResultsList = () => {
     setPropertyData(data?.properties || []);
   }, [data]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error loading properties</div>;
-  }
-
-  if (!data || !data.properties) {
-    return <div>No properties found</div>;
-  }
-
   const onLoadMore = () => {
     const nextPage = page + 1;
     const newSearchQuery = { ...searchQuery, page: nextPage };
@@ -63,18 +51,52 @@ const SearchResultsList = () => {
     router.push(newUrl, { scroll: false });
   };
 
-  const onSearchInput = (searchParams: Record<string, string>) => {
-    const queryUrl = qs.stringifyUrl(
+  const onSearchInput = (searchParams: PropertyQueryParams) => {
+    const newSearchQuery = { ...searchQuery, ...searchParams };
+
+    const newUrl = qs.stringifyUrl(
       {
-        url: "/property",
-        query: searchParams,
+        url: window.location.pathname,
+        query: newSearchQuery,
       },
       {
         skipEmptyString: true,
         skipNull: true,
       }
     );
-    console.log(queryUrl);
+
+    console.log(newUrl, newSearchQuery);
+    setSearchQuery(newSearchQuery);
+    router.push(newUrl, { scroll: false });
+  };
+
+  const displayResults = () => {
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
+
+    if (isError) {
+      return <div>Error loading properties</div>;
+    }
+
+    if (!data || !data.properties.length) {
+      return <div>No properties found</div>;
+    }
+
+    return (
+      <>
+        <div className="property-grid pt-8">
+          {propertyData.map((property) => (
+            <PropertyCard
+              key={property.id}
+              display="search"
+              propertyDetails={property}
+            />
+          ))}
+        </div>
+        {data.hasMore && <SearchAction onClick={onLoadMore} />}
+      </>
+    );
   };
 
   return (
@@ -100,16 +122,7 @@ const SearchResultsList = () => {
           onSearchInput={onSearchInput}
         />
       </div>
-      <div className="property-grid pt-8">
-        {propertyData.map((property) => (
-          <PropertyCard
-            key={property.id}
-            display="search"
-            propertyDetails={property}
-          />
-        ))}
-      </div>
-      {data.hasMore && <SearchAction onClick={onLoadMore} />}
+      {displayResults()}
     </>
   );
 };

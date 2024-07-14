@@ -8,6 +8,7 @@ import {
   SearchInputValidatorType,
   searchInputValidator,
 } from "@/lib/validators";
+import { PropertyQueryParams } from "@/types/property";
 import { BED_OPTIONS, STANDARD_PROPERTY_OPTIONS } from "@/constants/search";
 import { rentPrices, salePrices } from "@/utilities/property-utils";
 import {
@@ -36,7 +37,7 @@ import { Button } from "@/components/ui/button";
 
 type SearchInputFormProps = {
   searchType: PropertySearchType;
-  onSearchInput: (searchParams: Record<string, string>) => void;
+  onSearchInput: (searchParams: PropertyQueryParams) => void;
 };
 
 const SearchInputForm = ({
@@ -52,16 +53,13 @@ const SearchInputForm = ({
 
   const getPropertyTypeOptions = (searchType: PropertySearchType) => {
     if (searchType === "sale") {
-      return [
-        ...STANDARD_PROPERTY_OPTIONS,
-        { text: "Multi Family", value: "multi" },
-      ];
+      return [...STANDARD_PROPERTY_OPTIONS, { value: "Multi Family" }];
     }
 
     return [
       ...STANDARD_PROPERTY_OPTIONS,
-      { text: "Apartment", value: "apartment" },
-      { text: "Efficiency", value: "efficiency" },
+      { value: "Apartment" },
+      { value: "Efficiency" },
     ];
   };
 
@@ -191,7 +189,7 @@ const SearchInputForm = ({
                               />
                             </FormControl>
                             <FormLabel className="font-normal">
-                              {option.text}
+                              {option.value}
                             </FormLabel>
                           </FormItem>
                         )}
