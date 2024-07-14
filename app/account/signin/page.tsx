@@ -42,17 +42,18 @@ const AccountSignInPage = () => {
   const onSubmit = async (data: SignInValidatorType) => {
     setIsSubmitting(true);
     const response = await signInUserAction(data);
-    setIsSubmitting(false);
 
-    if (response.data) {
-      return router.push("/client/dashboard");
+    if (!response.data) {
+      const errMessage =
+        response.statusCode === 500
+          ? "An error occurred, please try again later."
+          : response.message;
+      toast.error(errMessage);
+      return setIsSubmitting(false);
     }
 
-    const errMessage =
-      response.statusCode === 500
-        ? "An error occurred, please try again later."
-        : response.message;
-    toast.error(errMessage);
+    router.push("/client/dashboard");
+    setIsSubmitting(false);
   };
 
   return (
