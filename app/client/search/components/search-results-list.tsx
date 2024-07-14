@@ -3,7 +3,9 @@
 import qs from "query-string";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
+
+import { cn, isEmpty } from "@/lib/utils";
 import SearchAction from "./search-action";
 import { PropertySearchType } from "@/types";
 import { PropertyInfo, PropertyQueryParams } from "@/types/property";
@@ -21,8 +23,13 @@ const SearchResultsList = () => {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const address = searchParams.get("q") || undefined;
+  const address = searchParams.get("address") || undefined;
   const page = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
+  const beds = searchParams.get("beds") || undefined;
+  const baths = searchParams.get("baths") || undefined;
+  const priceMin = searchParams.get("priceMin") || undefined;
+  const priceMax = searchParams.get("priceMax") || undefined;
+  const type = searchParams.get("type") || undefined;
 
   const [searchType, setSearchType] = useState<"sale" | "rent">(
     searchTypeOptions[0].name as PropertySearchType
@@ -30,6 +37,11 @@ const SearchResultsList = () => {
   const [searchQuery, setSearchQuery] = useState<PropertyQueryParams>({
     page,
     address,
+    type,
+    beds,
+    baths,
+    priceMin,
+    priceMax,
   });
 
   const { data, isLoading, isError } = useGetPropertiesQuery(searchQuery);
@@ -52,12 +64,14 @@ const SearchResultsList = () => {
   };
 
   const onSearchInput = (searchParams: PropertyQueryParams) => {
-    const newSearchQuery = { ...searchQuery, ...searchParams };
+    if (isEmpty(searchParams)) {
+      setSearchQuery({});
+    }
 
     const newUrl = qs.stringifyUrl(
       {
         url: window.location.pathname,
-        query: newSearchQuery,
+        query: { ...searchParams },
       },
       {
         skipEmptyString: true,
@@ -65,22 +79,33 @@ const SearchResultsList = () => {
       }
     );
 
-    console.log(newUrl, newSearchQuery);
-    setSearchQuery(newSearchQuery);
+    setSearchQuery(searchParams);
     router.push(newUrl, { scroll: false });
   };
 
   const displayResults = () => {
     if (isLoading) {
-      return <div>Loading...</div>;
+      return (
+        <div className="flex h-40 items-center justify-center text-lg">
+          <Loader2 className="size-12 animate-spin" />
+        </div>
+      );
     }
 
     if (isError) {
-      return <div>Error loading properties</div>;
+      return (
+        <div className="flex h-40 items-center justify-center text-lg">
+          Error loading properties
+        </div>
+      );
     }
 
     if (!data || !data.properties.length) {
-      return <div>No properties found</div>;
+      return (
+        <div className="flex h-40 items-center justify-center text-lg">
+          No properties found for selected search criteria
+        </div>
+      );
     }
 
     return (
@@ -118,6 +143,7 @@ const SearchResultsList = () => {
           ))}
         </div>
         <SearchInputForm
+          initialSearchQuery={searchQuery}
           searchType={searchType}
           onSearchInput={onSearchInput}
         />

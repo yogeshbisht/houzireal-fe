@@ -36,11 +36,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 
 type SearchInputFormProps = {
+  initialSearchQuery: PropertyQueryParams;
   searchType: PropertySearchType;
   onSearchInput: (searchParams: PropertyQueryParams) => void;
 };
 
 const SearchInputForm = ({
+  initialSearchQuery,
   searchType,
   onSearchInput,
 }: SearchInputFormProps) => {
@@ -66,12 +68,14 @@ const SearchInputForm = ({
   const form = useForm<SearchInputValidatorType>({
     resolver: zodResolver(searchInputValidator),
     defaultValues: {
-      address: "",
-      propertyType: [],
-      beds: "any",
-      baths: "any",
-      priceMin: "any",
-      priceMax: "any",
+      address: initialSearchQuery.address || "",
+      propertyType: initialSearchQuery.type
+        ? initialSearchQuery.type.split(",")
+        : [],
+      beds: initialSearchQuery.beds || "any",
+      baths: initialSearchQuery.baths || "any",
+      priceMin: initialSearchQuery.priceMin || "any",
+      priceMax: initialSearchQuery.priceMax || "any",
     },
   });
 
@@ -99,17 +103,12 @@ const SearchInputForm = ({
     if (
       selectedPriceMin !== "any" &&
       selectedPriceMax !== "any" &&
-      parseInt(selectedPriceMax) <= parseInt(selectedPriceMin)
+      Number(selectedPriceMax) <= Number(selectedPriceMin)
     ) {
       const nextPrice = minPriceList[selectedPriceMinIndex + 1];
       form.setValue("priceMax", nextPrice ? nextPrice.value : "any");
     }
   }, [form, selectedPriceMin, selectedPriceMax, minPriceList]);
-
-  useEffect(() => {
-    form.setValue("priceMin", "any");
-    form.setValue("priceMax", "any");
-  }, [form, searchType]);
 
   const onSubmit = (data: SearchInputValidatorType) => {
     const { address, propertyType, beds, baths, priceMin, priceMax } = data;
@@ -125,9 +124,21 @@ const SearchInputForm = ({
     onSearchInput(searchParams);
   };
 
+  const onClearSearch = () => {
+    form.reset({
+      address: "",
+      propertyType: [],
+      beds: "any",
+      baths: "any",
+      priceMin: "any",
+      priceMax: "any",
+    });
+    onSearchInput({});
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="relative">
         <div className="grid grid-cols-12 gap-4">
           <FormField
             control={form.control}
@@ -314,10 +325,13 @@ const SearchInputForm = ({
             />
           </div>
         </div>
-        <div className="mt-8 flex items-center justify-center">
-          <Button variant="brand" type="submit" className="w-full max-w-80">
+        <div className="mt-8 flex items-center justify-start sm:justify-center">
+          <Button variant="brand" type="submit" className="w-full max-w-60">
             Search
           </Button>
+        </div>
+        <div className="absolute bottom-0 right-0 mt-4 text-right sm:mt-0">
+          <Button onClick={onClearSearch}>Clear</Button>
         </div>
       </form>
     </Form>
