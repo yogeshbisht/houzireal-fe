@@ -1,5 +1,3 @@
-import { PropertyInfo } from "./property";
-
 export interface SignInUserParams {
   email: string;
   password: string;
@@ -15,5 +13,5 @@ export interface UserProfile {
   id: string;
   name: string;
   email: string;
-  favorites?: PropertyInfo[];
+  favorites?: string[];
 }
