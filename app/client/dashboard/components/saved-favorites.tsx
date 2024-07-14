@@ -1,23 +1,20 @@
-"use client";
-
 import { COLORS_ARRAY } from "@/constants/colors";
-import { useGetUserProfileQuery } from "@/app/services/user.service";
+import { GetRequest } from "@/lib/API";
+import { PropertyInfo } from "@/types/property";
 import { propertyFullAddress } from "@/utilities/property-utils";
 import ExpansionPanel from "@/components/shared/expansion-panel";
 
-const SavedFavorites = () => {
-  const { data: user, isLoading, isError } = useGetUserProfileQuery();
+async function getUserFavorites() {
+  const favorites = await GetRequest("/user/profile/favorites");
+  const result = await favorites.json();
+  return result?.data;
+}
+
+const SavedFavorites = async () => {
+  const userFavorites: PropertyInfo[] = await getUserFavorites();
 
   const displayFavoriteProperties = () => {
-    if (isLoading) {
-      return <div>Loading...</div>;
-    }
-
-    if (isError) {
-      return <div>Error loading favorites</div>;
-    }
-
-    if (!user?.favorites?.length) {
+    if (!userFavorites?.length) {
       return (
         <div className="flex items-center justify-center">
           There are no saved favorites.
@@ -32,7 +29,7 @@ const SavedFavorites = () => {
           <span>Property Type</span>
           <span>Beds/Baths</span>
         </div>
-        {user.favorites.map((favorite) => (
+        {userFavorites.map((favorite) => (
           <div
             key={favorite.id}
             className="grid w-full grid-cols-4 gap-2 space-y-1"
@@ -51,7 +48,7 @@ const SavedFavorites = () => {
   return (
     <ExpansionPanel
       title="Saved Favorites"
-      numberOfRows={user?.favorites?.length || 0}
+      numberOfRows={userFavorites?.length || 0}
       backgroundColor={COLORS_ARRAY[5]}
     >
       {displayFavoriteProperties()}
