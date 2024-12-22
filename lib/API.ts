@@ -4,19 +4,21 @@ import { ResponseErrorParams } from "@/types";
 
 const getApiUrl = (url: string) => `${API_URL}${url}`;
 
-const getRequestHeader = (isPublicRoute: boolean) => {
+const getRequestHeader = async (isPublicRoute: boolean) => {
   if (isPublicRoute) {
     return {
       "Content-Type": "application/json",
-      authorization: "",
+      authorization: ""
     };
   }
 
-  const token = cookies().get("token")?.value;
+  const cookieStore = await cookies();
+
+  const token = cookieStore.get("token");
 
   return {
     "Content-Type": "application/json",
-    authorization: token ? `Bearer ${token}` : "",
+    authorization: token ? `Bearer ${token}` : ""
   };
 };
 
@@ -26,7 +28,7 @@ export const GetRequest = async (
 ) => {
   return await fetch(getApiUrl(url), {
     method: "GET",
-    headers: getRequestHeader(isPublicRoute),
+    headers: await getRequestHeader(isPublicRoute)
   });
 };
 
@@ -37,8 +39,8 @@ export const PostRequest = async (
 ) => {
   return await fetch(getApiUrl(url), {
     method: "POST",
-    headers: getRequestHeader(isPublicRoute),
-    body: JSON.stringify(body),
+    headers: await getRequestHeader(isPublicRoute),
+    body: JSON.stringify(body)
   });
 };
 
@@ -51,6 +53,6 @@ export const ErrorResponse = (error: any): ResponseErrorParams => {
 
   return {
     statusCode: error?.statusCode || 500,
-    message: error?.message || message,
+    message: error?.message || message
   };
 };
