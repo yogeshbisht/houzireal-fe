@@ -13,7 +13,6 @@ const getRequestHeader = async (isPublicRoute: boolean) => {
   }
 
   const cookieStore = await cookies();
-
   const token = cookieStore.get("token");
 
   return {

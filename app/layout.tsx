@@ -5,16 +5,17 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import StoreProvider from "@/provider/StoreProvider";
 import { Toaster } from "sonner";
+import AuthProvider from "@/provider/auth-provider";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "Houzireal",
-  description: "A one of a kind real estate platform.",
+  description: "A one of a kind real estate platform."
 };
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -27,8 +28,10 @@ export default function RootLayout({
             fontSans.variable
           )}
         >
-          <div className="min-w-[480px] overflow-auto">{children}</div>
-          <Toaster richColors />
+          <AuthProvider>
+            <div className="min-w-[480px] overflow-auto">{children}</div>
+            <Toaster richColors />
+          </AuthProvider>
         </body>
       </html>
     </StoreProvider>

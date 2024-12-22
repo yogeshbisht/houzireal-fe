@@ -15,7 +15,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -23,9 +23,9 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
-import AuthFooter from "../components/auth-footer";
+import AuthFooter from "../../../components/shared/auth-footer";
 
 const AccountSignUpPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,8 +36,8 @@ const AccountSignUpPage = () => {
     defaultValues: {
       email: "",
       password: "",
-      confirmPassword: "",
-    },
+      confirmPassword: ""
+    }
   });
 
   const onSubmit = async (data: SignUpValidatorType) => {

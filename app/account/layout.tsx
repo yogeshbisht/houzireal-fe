@@ -1,18 +1,12 @@
 import React from "react";
 import { redirect } from "next/navigation";
-import { GetRequest } from "@/lib/API";
 import { Card } from "@/components/ui/card";
-
-async function checkUserSession() {
-  const response = await GetRequest("/user/session");
-  const result = await response.json();
-  return result.isAuthenticated;
-}
+import { getActiveSession } from "@/app/api/auth/[...nextauth]/route";
 
 const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = await checkUserSession();
+  const session = await getActiveSession();
 
-  if (isAuthenticated) {
+  if (session) {
     redirect("/client/dashboard");
   }
 
