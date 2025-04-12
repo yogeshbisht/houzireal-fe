@@ -2,20 +2,16 @@
 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInValidator, SignInValidatorType } from "@/lib/validators";
-import { signInUserAction } from "@/lib/actions/auth.action";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -23,36 +19,30 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
-import AuthFooter from "../components/auth-footer";
+import AuthFooter from "../../../components/shared/auth-footer";
+import { signIn } from "next-auth/react";
 
 const AccountSignInPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
 
   const form = useForm<SignInValidatorType>({
     resolver: zodResolver(SignInValidator),
     defaultValues: {
       email: "",
-      password: "",
-    },
+      password: ""
+    }
   });
 
   const onSubmit = async (data: SignInValidatorType) => {
     setIsSubmitting(true);
-    const response = await signInUserAction(data);
-
-    if (!response.data) {
-      const errMessage =
-        response.statusCode === 500
-          ? "An error occurred, please try again later."
-          : response.message;
-      toast.error(errMessage);
-      return setIsSubmitting(false);
-    }
-
-    router.push("/client/dashboard");
+    await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: true,
+      callbackUrl: "/client/dashboard"
+    });
     setIsSubmitting(false);
   };
 

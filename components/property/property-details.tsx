@@ -10,7 +10,7 @@ import {
   Home,
   LandPlot,
   MapPin,
-  ParkingCircle,
+  ParkingCircle
 } from "lucide-react";
 import { BiSolidCarGarage } from "react-icons/bi";
 import { MdBalcony } from "react-icons/md";
@@ -18,7 +18,7 @@ import { MdBalcony } from "react-icons/md";
 import { PropertyFeature } from "@/types/property";
 import {
   getAmountWithCurrency,
-  propertyFullAddress,
+  propertyFullAddress
 } from "@/utilities/property-utils";
 import {
   Carousel,
@@ -26,12 +26,12 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-  type CarouselApi,
+  type CarouselApi
 } from "@/components/ui/carousel";
 import PropertySection from "./property-section";
 import Link from "next/link";
 import { useGetPropertyByIdQuery } from "@/app/services/property.service";
-import NotFound from "@/components/common/not-found";
+import NotFound from "@/app/not-found";
 
 type PropertyDetailsProps = {
   propertyId: string;
@@ -47,7 +47,7 @@ const PropertyDetails = ({ propertyId }: PropertyDetailsProps) => {
   const {
     data: property,
     isLoading,
-    isError,
+    isError
   } = useGetPropertyByIdQuery(propertyId);
 
   const [api, setApi] = useState<CarouselApi>();
@@ -89,38 +89,38 @@ const PropertyDetails = ({ propertyId }: PropertyDetailsProps) => {
       {
         title: "Type",
         value: property.propertyType,
-        icon: Home,
+        icon: Home
       },
       {
         title: "Bedrooms",
         value: property.beds,
-        icon: Bed,
+        icon: Bed
       },
       {
         title: "Bathrooms",
         value: property.baths,
-        icon: Bath,
+        icon: Bath
       },
       {
         title: "Garage Spaces",
         value: property.garages,
-        icon: BiSolidCarGarage,
+        icon: BiSolidCarGarage
       },
       {
         title: "Area",
         value: `${property.area} sqft`,
-        icon: LandPlot,
+        icon: LandPlot
       },
       {
         title: "Secure parking",
-        icon: ParkingCircle,
-      },
+        icon: ParkingCircle
+      }
     ];
 
     if (property.balcony) {
       propertyFeatures.push({
         title: "Balcony",
-        icon: MdBalcony,
+        icon: MdBalcony
       });
     }
 
